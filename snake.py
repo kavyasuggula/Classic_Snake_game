@@ -1,28 +1,27 @@
 from turtle import Turtle, Screen
 import time
 frame = Screen()
+
 score = Turtle()
 score.hideturtle()
-score.color("White")
+score.color("white")
 score.penup()
-score.goto(0, 250)
+score.goto(0, 260)
 s = 0
 
-g = Turtle()
-g.hideturtle()
-g.color("White")
-g.penup()
-g.goto(0, 0)
+
+ko = Turtle()
+ko.hideturtle()
+ko.color("white")
+ko.penup()
 
 
-class Snake():
+class Snake:
     snake = []
 
     def __init__(self):
-        self.create_snake()
         self.score = 0
-        self.xl = []
-        self.yl = []
+        self.create_snake()
 
     def create_snake(self):
         frame.tracer(0)
@@ -34,7 +33,7 @@ class Snake():
             t.speed('fastest')
             self.snake.append(t)
 
-    def move(self, w, h,food):
+    def move(self, w, h, food):
         game_on = True
         while game_on:
             frame.update()
@@ -43,22 +42,23 @@ class Snake():
                 x = self.snake[seg - 1].xcor()
                 y = self.snake[seg - 1].ycor()
                 self.snake[seg].goto(x, y)
-            game_on = self.game_control(w, h,food)
-        g.write(f"Game Over!",align="center",font=("normal",25,"bold"))
+            game_on = self.game_control(w, h, food)
+        ko.write(f"Game Over", align="center", font=("Arial", 24, "normal"))
+
 
     def game_control(self, w, h, food):
-        global s
-        self.xl = [(-w//2)+20, (w//2)-20]
-        self.yl = [(-h // 2) + 20, (h // 2) - 20]
+        global  s
+        self.xl = [(-w//2)-30, (w//2)+20]
+        self.yl = [(-h // 2) + 30, (h // 2) - 20]
         if self.snake[0].xcor() <= self.xl[1] and self.snake[0].xcor() >= self.xl[0] and self.snake[0].ycor() <= self.yl[1] and self.snake[0].ycor() >= self.yl[0]:
             self.snake[0].fd(20)
-            if self.tail_collide():
+            if self.check_body_hit():
                 if self.snake[0].distance(food) < 15:
-                    food.refresh(w, h)
-                    self.add_turtle()
+                    food.new_location(w, h)
+                    self.add_segment()
                     s += 1
                     score.clear()
-                    score.write(f"Score : {s}", align="center", font=("Arial", 24, "bold"))
+                    score.write(f"Score: {s}", align="center", font=("Arial", 24, "normal"))
 
                 return True
             else:
@@ -78,10 +78,10 @@ class Snake():
     def turn_down(self):
         self.snake[0].setheading(270)
 
-    def add_turtle(self):
+    def add_segment(self):
         self.last_x_cor = self.snake[len(self.snake)-1].xcor()
-        self.last_y_cor = self.snake[len(self.snake)-1].ycor()
-        self.new_turtle_heading = self.snake[len(self.snake)-1].heading()
+        self.last_y_cor = self.snake[len(self.snake) - 1].ycor()
+        self.new_seg_heading = self.snake[len(self.snake) - 1].heading()
         t = Turtle(shape="square")
         t.penup()
         t.color("white")
@@ -89,8 +89,7 @@ class Snake():
         t.goto(self.last_x_cor, self.last_y_cor)
         self.snake.append(t)
 
-
-    def tail_collide(self):
+    def check_body_hit(self):
         self.not_hit = True
         for i in range(1,len(self.snake)-1):
             if self.snake[0].distance(self.snake[i]) <= 10:
@@ -100,4 +99,9 @@ class Snake():
             return True
         else:
             return False
+
+
+
+
+
 
