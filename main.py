@@ -1,8 +1,5 @@
 from snake import *
-from turtle import Screen
 from food import Food
-
-frame = Screen()
 frame.listen()
 frame.setup(width=600, height=600)
 frame.title("Snake Game")
@@ -28,14 +25,17 @@ while game_on:
         snake[seg].goto(x, y)
     snake[0].fd(10)"""
 
+
 snake = Snake()
 food = Food(600,600)
+
+
 frame.onkey(snake.turn_left, "Left")
 frame.onkey(snake.turn_right, "Right")
 frame.onkey(snake.turn_up, "Up")
 frame.onkey(snake.turn_down, "Down")
 
-snake.move(600, 600, food)
+snake.move(500, 600, food)
 
 
 
